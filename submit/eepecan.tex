@@ -115,15 +115,16 @@
 	
 	\section{eePEcAn: Implementation plan}
 	
-	\textbf{eePecAn:} Module to Integrate Google Earth Engine and PecAn
+	\textbf{eePecAn:} Module to Integrate Google Earth Engine and PecAn \newline
 	
 	\noindent eePecAn is a three-part project:
 	
 	
 	\begin{enumerate}
-		\item \textbf{Handling Authentication and Initialization using R:} Google Earth Engine currently does not support R, which is the main language in which PecAn is developed.  So the first step is to create a synchronization between the Earth Engine Python API and R. For this step will be used \textbf{reticulate } very similar to what was seen \href{https://github.com/csaybar/rgee}{rgee} with the difference that all credentials will be previously stored in the file \textbf{pecan.xml} (the user could change their credentials to preference) and then be reconfigured the /config of the system.
+		\item \textbf{Handling Authentication and Initialization using R:} Google Earth Engine currently does not support R, which is the main language in which PecAn is developed.  So the first step is to create a synchronization between the Earth Engine Python API and R. For this step will be used \textbf{reticulate} very similar to what we could see in
+		\href{https://github.com/csaybar/rgee}{rgee} with the difference that all credentials will be previously encrypted and stored in the file \textbf{pecan.xml} (the user could change their credentials to preference) and then be reconfigured in the /config folder of your system as a JSON file.
 		
-		\item \textbf{Extract time series by points(eePecan\_extract)}: The second part looks for a robust module for obtaining time series. The idea is to improve and simplify the \href{https://csaybar.github.io/rgee/reference/ee_extract.html}{rgee::ee\_extract} function so that it is not limited to only \href{https://developers.google.com/earth-engine/ic_info}{5000 elements per request}. In order to guarantee the efficiency and speed of the process. \emph{eePecan\_extract} will be carried out using \href{https://developers.google.com/earth-engine/joins_intro}{ee.Join} objects. The function will return a data.frame and would be as follows:
+		\item \textbf{Extract time series by points(eePecan\_extract)}: The second part looks for a robust module for obtaining time series. The idea is to improve and simplify the \textbf{ \href{https://csaybar.github.io/rgee/reference/ee_extract.html}{rgee::ee\_extract}} function so that it is not limited to only \href{https://developers.google.com/earth-engine/ic_info}{5000 elements per request}. In order to guarantee the efficiency and speed of the process. \textbf{eePecan\_extract} will be carried out using the module \href{https://developers.google.com/earth-engine/joins_intro}{ee.Join}. The function will return a data.frame and would be as follows:
 		
 		\begin{lstlisting}
 			library(PEcAn.all)
@@ -134,7 +135,9 @@
 				lastdate = "200-12-31",
 			)
 		\end{lstlisting}
-		In addition to the implementation, I will add different unit tests, in order to guarantee a proficient performance.
+		
+		In addition to the implementation, I will perform  several control quality functions for the most popular datasets (MODIS, Sentinel2, Landsat 8,7,5, etc.) along with different unit tests, in order to guarantee a proficient performance. \textbf{Just to be clear, with eePecan\_extract you would be able to extract values from any Earth Engine Images or ImageCollections such as, for instance, Landsat, MODIS, Sentinel, GPM, TRMM, terraclimate, etc.}
+		
 		
 		\item {\textbf{Improvement of the shiny app to display PEcAn outputs}}: The last GSoC, Shuang Lu enhance the PEcAn shiny app to visualizing model output data alongside external data. I intend to give the user the possibility of adding external data only by adding the \textbf{GEE collection name, the band name and the correction scale}. With only these arguments the time series will appear automatically (the date range will be obtained from the file \textbf{eePEcAn.xml}).
 		
@@ -143,7 +146,13 @@
 			\label{fig:fig01main}
 		\end{novspacecenter}
 	\end{enumerate}
-	
+	\section{deliverables}
+	\begin{itemize}
+		\item An R module to authenticate and initialize the Earth Engine API. Full access to the API with the prefix ee\$…
+		\item Implementing of the function eePecan\_extract to easily get time series using Google Earth Engine two approaches will be put into practice: using ee.Join and maps and filter.
+		\item A series of functions to realize control quality to satellite images.
+		\item Proper documentation and tests for the above-mentioned components.	
+	\end{itemize}
 	\section{Timeline}
 	
 	\subsection*{Before April 30:}
@@ -179,8 +188,15 @@
 	\textbf{Age:} 25 years \newline \newline
 	\textbf{Sex:} Male \newline \newline
 	\textbf{Study level:} Erasmus Graduate Student at the CDE program 2020-2022. \newline \newline
-	\textbf{Why PEcAn?:} PEcAn is one of the few projects in Earth Science that is fully intended to be transparent and reproducible. I personally believe that the use of technology such as distributed version-control system, docker containers, and CI/CD are the right way for doing the disruptive and high-impact science. I am definitely interested in learning from top-level researchers that use this stack on their daily basis. \newline \newline
-	\textbf{Why this project?:} Google Earth Engine along with tensorflow are my favorite technologies, after spending more than a year learning about them. I have never used them in a tangible project with real results. I firmly believe that the GEE - PecAn project is the perfect opportunity to put everything I have learned into practice. \newline \newline
-		
+	\textbf{Why PEcAn?:} PEcAn is one of the few projects in Earth Science that is fully intended to be transparent and reproducible. I personally believe that the use of technology such as distributed version-control system, docker containers, and CI/CD are the right way for doing disruptive and high-impact science. I am definitely interested in learning from top-level researchers that use this stack on their daily basis. \newline \newline
+	\textbf{Why this project?:} Google Earth Engine along with tensorflow are my favorite technologies. Although I spending more than a year learning about them, I have never used them in a tangible project with real results. I firmly believe that the GEE - PecAn project is the perfect opportunity to put everything I have learned into practice. \newline \newline
+
+	\section{Stretch goals}
+	\begin{itemize}
+		\item Upload totally or partially the PostgreSQL database (BETYdb) to Google Earth Engine as a FeatureCollection. This would allow us generating, for instance, regional LAI analyzes quickly. 
+		\item Automatically upload PEcAn output to Google Earth Engine using rgee. It would be helpful for sharing your results with other researchers.
+		\item Automatically generation of documentation of Earth Engine functions and methods in the R style format: Currently this is implemented in rgee (\href{https://github.com/csaybar/rgee/blob/master/R/ee_help.R}{ee\_help}) but with several errors. It will be beneficial for both projects (rgee and eePEcAn) to have this function to quickly understand what each method or function of GEE does.
+		\item Integrating the PEcAn project with \href{https://developers.planet.com/docs/data/}{Planet API}
+	\end{itemize}
 \end{document}
 
