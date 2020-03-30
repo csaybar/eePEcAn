@@ -125,6 +125,7 @@
 				\bfseries
 				\boldmath
 				\sffamily
+				\centering
 				\thetitle
 				\par
             }
@@ -142,7 +143,7 @@
 	        \fi
             \vskip1.5\onelineskip
             \begin{novspacecenter}
-        		\includegraphics[width=70mm]{TFEE.png}
+        		\includegraphics[width=120mm]{eepecan.png}
         	\end{novspacecenter}
             \vskip2.5\onelineskip
             {%
@@ -276,6 +277,29 @@
 }
 \makeatother
 %%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	language=Java,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
 
 %%%%%%%%%%%%%%
 % Licences
@@ -289,3 +313,5 @@
 \newcommand{\apache}{This work is licensed under a Apache License 2.0 license: \URL{https://www.apache.org/licenses/LICENSE-2.0}}
 %%%%%%%%%%%%%%
 \endinput
+
+
